@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+app_dir="$1"
+cache_dir="$2"
+deps_dir="$3"
+bp_index="$4"
+
+echo "* Devolved buildpack"
+
+if [ -x "${app_dir}/bin/finalize" ]; then
+  echo "  * devolving finalize script to ${app_dir}/bin/finalize ..."
+  exec "${app_dir}/bin/finalize" "${app_dir}" "${cache_dir}" "${deps_dir}" "${bp_index}"
+else
+  echo "  * No executable finalize script found in ${app_dir}/bin/; exiting"
+  exit 0
+fi

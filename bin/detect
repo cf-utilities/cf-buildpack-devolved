@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+app_dir="$1"
+
+echo "* Devolved buildpack"
+
+if [ -x "${app_dir}/bin/detect" ]; then
+  echo "  * devolving detect script to ${app_dir}/bin/detect ..."
+  exec "${app_dir}/bin/detect" "${app_dir}"
+else
+  echo "  * No executable detect script found in ${app_dir}/bin/; exiting"
+  exit 0
+fi

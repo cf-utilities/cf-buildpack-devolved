@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+app_dir="$1"
+
+echo "* Devolved buildpack" >&2
+
+if [ -x "${app_dir}/bin/release" ]; then
+  echo "  * devolving release script to ${app_dir}/bin/release ..." >&2
+  exec "${app_dir}/bin/release" "${app_dir}"
+else
+  echo "  * No executable release script found in ${app_dir}/bin/; using default command" >&2
+  cat <<'HERE'
+default_process_types:
+  web: nc -nkl $PORT
+HERE
+  exit 0
+fi
